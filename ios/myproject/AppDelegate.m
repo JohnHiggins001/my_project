@@ -39,8 +39,8 @@ static void InitializeFlipper(UIApplication *application) {
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"main" initialProperties:nil];
 
 //  公积金文档(1)
-  rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation moduleName:@"main" initialProperties:nil launchOptions:launchOptions];
-  
+//  rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation moduleName:@"main" initialProperties:nil launchOptions:launchOptions];
+//
   id rootViewBackgroundColor = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"RCTRootViewBackgroundColor"];
   if (rootViewBackgroundColor != nil) {
     rootView.backgroundColor = [RCTConvert UIColor:rootViewBackgroundColor];
