@@ -5,9 +5,10 @@ import { connect } from 'react-redux'
 
 class RecodingBottomBars extends Component {
     render() {
+        const { theme } = this.props
         return <BottomTabBar
             {...this.props}
-            activeTintColor={this.props.theme}
+            activeTintColor={theme}
         />
     }
 }

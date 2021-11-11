@@ -7,9 +7,6 @@ import SearchItem from '../../common/SearchItem'
 import color from '../../style/colorStyle'
 
 const SearchListUrl = `https://github.com/trending/`;
-const THEME_COLOR = color.activeBarColor;
-
-
 class SearchTopTab extends Component {
     constructor(props) {
         super(props)
@@ -56,9 +53,11 @@ class SearchTopTab extends Component {
     renderItem(item) {
         return (
             <SearchItem
+                key={item.item.id}
                 item={item.item}
                 onItemSelect={(value) => { this.onItemSelect(value) }
                 }
+                {...this.props}
             >
             </SearchItem>
         )
@@ -67,8 +66,8 @@ class SearchTopTab extends Component {
     render() {
         let data = this.props.search && this.props.search[this.tabName] && this.props.search[this.tabName].items
         let isLoading = this.props.search && this.props.search[this.tabName] && this.props.search[this.tabName] && this.props.search[this.tabName].isLoading
-        // console.log('this.searchPage --- props--->', this.props);
-
+        console.log('this.searchPage --- props--->', this.props);
+        const { theme } = this.props
         return (
             <View style={styles.container}>
                 {/* <Text style={styles.text}>{`tab标签是--->${this.tabName}`}</Text> */}
@@ -86,11 +85,11 @@ class SearchTopTab extends Component {
                     refreshControl={
                         <RefreshControl
                             title={'loading....'}
-                            titleColor={THEME_COLOR}
-                            colors={[THEME_COLOR]}
+                            titleColor={theme}
+                            colors={[theme]}
                             refreshing={isLoading}
                             onRefresh={() => this.loadData()}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme}
                         />
                     }
                 ></FlatList>

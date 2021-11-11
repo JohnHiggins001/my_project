@@ -6,7 +6,7 @@ import HomeTopNavigator from '../navigator/HomeTopNavigator';
 import color from '../style/colorStyle'
 import NavigationBar from '../common/NavigationBar'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { connect } from 'react-redux'
 class Home extends Component {
     static navigationOptions = {
         title: 'Welcome to the app!',
@@ -22,8 +22,9 @@ class Home extends Component {
     }
 
     render() {
+        const { theme } = this.props
         let statusBar = {
-            backgroundColor: color.activeBarColor,
+            backgroundColor: theme,
             barStyle: 'light-content',
         };
         let navigationBar =
@@ -35,7 +36,7 @@ class Home extends Component {
         return (
             <View style={styles.container}>
                 {navigationBar}
-                <TouchableWithoutFeedback style={styles.item}>
+                <TouchableWithoutFeedback style={[styles.item, { backgroundColor: theme }]}>
 
                     <TouchableOpacity
                         onPress={() => this.onClick('share')}
@@ -50,7 +51,7 @@ class Home extends Component {
                             }}
                         />
                     </TouchableOpacity>
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>技术栈</Text>
+                    <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>技术博客</Text>
                     <TouchableOpacity
                         onPress={() => this.onClick('share')}
                     >
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
         marginBottom: 6,
     },
     item: {
-        backgroundColor: color.activeBarColor,
+        // backgroundColor: color.activeBarColor,
         // height: 90,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -115,5 +116,7 @@ const styles = StyleSheet.create({
     },
 })
 
-
-export default Home
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+});
+export default connect(mapStateToProps)(Home)

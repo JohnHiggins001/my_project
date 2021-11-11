@@ -18,6 +18,7 @@ export default class NavigationBar extends Component {
     static propTypes = {
         style: ViewPropTypes.style,
         title: PropTypes.string,
+        activeColor: PropTypes.string,
         titleView: PropTypes.element,
         titleLayoutStyle: ViewPropTypes.style,
         hide: PropTypes.bool,
@@ -51,7 +52,7 @@ export default class NavigationBar extends Component {
                 {this.getButtonElement(this.props.rightButton)}
             </View>;
         return (
-            <View style={[styles.container, this.props.style]}>
+            <View style={[{ backgroundColor: this.props.statusBar.backgroundColor }, this.props.style]}>
                 {statusBar}
                 {content}
             </View>
@@ -69,7 +70,7 @@ export default class NavigationBar extends Component {
 }
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: color.activeBarColor,
+        // backgroundColor: this.props.statusBar.backgroundColor,
     },
     navBarButton: {
         alignItems: 'center',

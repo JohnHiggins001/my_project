@@ -7,6 +7,7 @@ import {
     TouchableHighlight,
     View,
     DeviceEventEmitter,
+    AsyncStorage,
 } from 'react-native';
 import { HeaderTitle } from 'react-navigation-stack';
 import SearchTopNavigator from '../navigator/SearchTopNavigator';
@@ -113,9 +114,9 @@ class Search extends Component {
     }
     render() {
         const { modalVisible } = this.state;
-
+        const { theme } = this.props
         let statusBar = {
-            backgroundColor: color.activeBarColor,
+            backgroundColor: theme,
             barStyle: 'light-content',
         };
         let navigationBar =
@@ -127,7 +128,7 @@ class Search extends Component {
         return (
             <View style={styles.container}>
                 {navigationBar}
-                <TouchableWithoutFeedback style={styles.item}>
+                <TouchableWithoutFeedback style={[styles.item, { backgroundColor: theme }]}>
 
                     <TouchableOpacity
                         onPress={() => this.onClick('share')}
@@ -181,10 +182,10 @@ class Search extends Component {
                         }}
                     >
 
-                        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>趋势本周</Text>
+                        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}>搜索</Text>
                         <MaterialIcons
                             name={'arrow-drop-down'}
-                            size={36}
+                            size={26}
                             style={styles.arrow}
                         />
                     </TouchableOpacity>
@@ -291,10 +292,13 @@ const styles = StyleSheet.create({
 // const mapStateToProps = state => ({
 //     search: state.search,
 // })
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+});
 const mapDispatchToProps = dispatch => ({
     onSearchTypeChange: type => dispatch(actions.onSearchTypeChange(type)),
     onNeedRefresh: type => dispatch(actions.onNeedRefresh(type))
 })
 
-export default connect(null, mapDispatchToProps)(Search)
+export default connect(mapStateToProps, mapDispatchToProps)(Search)
 // export default Search

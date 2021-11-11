@@ -7,14 +7,19 @@ import ViewUtil from '../common/ViewUtil';
 import color from '../style/colorStyle'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+// import { connect } from 'react-redux'
 const baseUrl = 'https://github.com/'
-export default class DetailPage extends Component {
+class DetailPage extends Component {
     constructor(props) {
         super(props)
-        this.value = props.navigation.state.params.value
-        this.title = this.value.type == 'search' ? (this.value.fullName || this.value.url) : (this.value.full_name || this.value.archive_url)
-        this.url = this.value.type == 'search' ? `${baseUrl}${this.value.fullName}` : (this.value.html_url || `${baseUrl}${this.value.full_name}`)
+        this.params = props.navigation.state.params
+        this.theme = this.params.theme
+        this.value = this.params.value
+        this.title = this.value.fullName ? this.value.fullName : this.value.full_name
+        // this.url = this.value.type == 'search' ? `${baseUrl}${this.value.fullName}` : (this.value.html_url || `${baseUrl}${this.value.full_name}`)
+        // this.url = 'https://reactnative.cn/docs/next/accessibilityinfo'
+        // this.url = 'https://reactnative.cn/'
+        this.url = 'https://reactnative.cn/'
         this.state = {
             title: this.title,
             url: this.url,
@@ -63,7 +68,7 @@ export default class DetailPage extends Component {
         const { title, url } = this.state
         console.log('url--->', url)
         let statusBar = {
-            backgroundColor: color.activeBarColor,
+            backgroundColor: this.theme,
             barStyle: 'light-content',
         };
         let navigationBar =
@@ -79,13 +84,13 @@ export default class DetailPage extends Component {
                 {navigationBar}
                 <TouchableWithoutFeedback
                     underlayColor={{ opacity: 1, color: '' }}
-                    style={styles.item}>
+                    style={[styles.item, { backgroundColor: this.theme }]}>
 
                     <TouchableOpacity onPress={() => this.callBack()}>
                         <Ionicons
                             name={'ios-arrow-back'}
                             size={26}
-                            style={{ color: 'white' }}
+                            style={{ marginLeft: 10, color: 'white' }}
                         />
                     </TouchableOpacity>
                     <Text numberOfLines={1} style={{ marginLeft: 15, marginRight: 15, flex: 1, color: 'white', fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>{title}</Text>
@@ -136,7 +141,7 @@ const styles = StyleSheet.create({
         // textAlign: 'center'
     },
     item: {
-        backgroundColor: color.activeBarColor,
+        // backgroundColor: color.activeBarColor,
         paddingBottom: 10,
         // height: 90,
         alignItems: 'center',
@@ -144,3 +149,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
 })
+// const mapStateToProps = state => ({
+//     theme: state.theme.theme
+// });
+// export default connect(mapStateToProps)(DetailPage)
+export default DetailPage

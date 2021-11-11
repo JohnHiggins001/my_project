@@ -6,9 +6,6 @@ import HomeItem from '../../common/HomeItem'
 import color from '../../style/colorStyle'
 const homeListUrl = `https://api.github.com/search/repositories?q=`;
 const query_star = '&sort=starts'
-const THEME_COLOR = color.activeBarColor;
-
-
 class HomeTopTab extends Component {
     constructor(props) {
         super(props)
@@ -37,16 +34,18 @@ class HomeTopTab extends Component {
     onItemSelect(value) {
         const { navigation, onItemSelect } = this.props
         // navigation.navigate('DetailPage')
-        onItemSelect(value);
+        onItemSelect([...this.props, value]);
         console.log('value-->', value);
     }
 
     renderItem(item) {
         return (
             <HomeItem
+                key={item.item.id}
                 item={item.item}
                 onItemSelect={(value) => { this.onItemSelect.call(this, value) }
                 }
+                {...this.props}
             >
             </HomeItem>
         )
@@ -55,6 +54,7 @@ class HomeTopTab extends Component {
     render() {
         let data = this.props.home && this.props.home[this.tabName] && this.props.home[this.tabName].items
         let isLoading = this.props.home && this.props.home[this.tabName] && this.props.home[this.tabName] && this.props.home[this.tabName].isLoading
+        const { theme } = this.props
         console.log('this.props--->', this.props);
 
         return (
@@ -74,11 +74,11 @@ class HomeTopTab extends Component {
                     refreshControl={
                         <RefreshControl
                             title={'loading....'}
-                            titleColor={THEME_COLOR}
-                            colors={[THEME_COLOR]}
+                            titleColor={theme}
+                            colors={[theme]}
                             refreshing={isLoading}
                             onRefresh={() => this.loadData()}
-                            tintColor={THEME_COLOR}
+                            tintColor={theme}
                         />
                     }
                 ></FlatList>

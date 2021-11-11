@@ -30,6 +30,7 @@ export default class TopNavigator extends Component {
     }
 
     render() {
+        const { theme } = this.props
         const HomeTopNavigator = createAppContainer(createMaterialTopTabNavigator(
             this.createTabs(),
             {
@@ -45,7 +46,7 @@ export default class TopNavigator extends Component {
 
                     },
                     upperCaseLabel: false,
-                    style: { backgroundColor: color.activeBarColor },
+                    style: { backgroundColor: theme },
                     indicatorStyle: {
                         height: 2,
                         backgroundColor: color.whiteColor

@@ -4,7 +4,9 @@ import color from '../style/colorStyle'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HTMLView from 'react-native-htmlview';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler'
-
+import Storage from '../common/Storage'
+import Types from '../redux/action/types'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class HomeItem extends Component {
 
     constructor(props) {
@@ -22,9 +24,23 @@ export default class HomeItem extends Component {
     _loadWebView(url) {
         // 打开url
     }
-
+    _storeData = async (key, data) => {
+        const { isStar } = this.state
+        // Storage._removeData(key)
+        if (!isStar) return
+        let oldValue = ''
+        oldValue = await AsyncStorage.getItem(key)
+        let newArr = []
+        if (oldValue) {
+            let filterData = JSON.parse(oldValue).filter(obj => obj.id != data.id)
+            newArr = [...filterData, data]
+        } else {
+            newArr = [data]
+        }
+        Storage._storeData(key, JSON.stringify(newArr))
+    }
     render() {
-        const { item, onItemSelect } = this.props
+        const { item, onItemSelect, theme } = this.props
         if (!item || !item.owner) return null;
         let desc = `<p><a href="https://www.baidu.com" target="_blank">${item && item.description}</a></p>`
         let meta = `<p><a href="https://www.baidu.com" target="_blank">updated_at:${item && item.updated_at}</a></p>`
@@ -36,13 +52,23 @@ export default class HomeItem extends Component {
                     <HTMLView
                         onLinkPress={(url) => this._loadWebView(url)}
                         // numberOfLines={3}
-                        style={styles.description}
+                        // style={styles.description}
                         stylesheet={descStyles}
                         value={desc} />
                     <HTMLView
                         // numberOfLines={1}
-                        style={styles.meta}
-                        stylesheet={metaStyles}
+                        // style={styles.meta}
+                        stylesheet={StyleSheet.create({
+                            p: {
+                                marginLeft: 5,
+                                marginTop: 5,
+                                fontSize: 14,
+                            },
+                            a: {
+                                fontWeight: 'bold',
+                                color: theme
+                            }
+                        })}
                         value={meta}
                         onLinkPress={(url) => this._loadWebView(url)}
                     />
@@ -54,11 +80,11 @@ export default class HomeItem extends Component {
                             onPress={() => {
                                 this.setState({
                                     isStar: !this.state.isStar,
-                                })
+                                }, () => { this._storeData(Types.COLLECTIONS_LIST_KEY, item) })
                             }}
                             style={{ width: 26, height: 26 }}
                         >
-                            <FontAwesome name={this.state.isStar ? 'star' : 'star-o'} size={26} style={{ color: 'black', }} />
+                            <FontAwesome name={this.state.isStar ? 'star' : 'star-o'} size={26} style={{ color: theme, }} />
                         </TouchableOpacity>
                     </View>
                 </View>
